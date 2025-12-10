@@ -1,39 +1,8 @@
-from flask import Flask, make_response, render_template, jsonify, request
-import base64
-import os
-from PyPDF2 import PdfMerger
-from random import randint
+from flask import Flask, render_template, jsonify, request
+from static.services.merge_pdf import merge_pdfs
+from static.services.save_pdf import save_pdfs
+
 app = Flask(__name__)
-
-
-def save_pdfs(pdfs):
-    for pdf in os.listdir('./static/pdfs/merged_pdf'):
-        os.remove(f'./static/pdfs/merged_pdf/{pdf}')
-
-    paths = []
-    for pdf in pdfs:
-        pdf_file = base64.b64decode(pdf.split(',')[1])
-        pdf_path = f'./static/pdfs/pdf_list/{randint(0,99999999999999999)}_file.pdf'
-        paths.append(pdf_path)
-        with open(pdf_path, 'wb') as f:
-            f.write(pdf_file)
-    return paths
-
-
-def merge_pdfs(pdfs_path):
-    pdf_merged_file = PdfMerger()
-
-    for pdf in pdfs_path:
-        pdf_merged_file.append(pdf)
-
-    pdf_merged_path = f'./static/pdfs/merged_pdf/{randint(0,10000000)}_merged_file.pdf'
-    pdf_merged_file.write(pdf_merged_path)
-    pdf_merged_file.close()
-
-    for pdf in pdfs_path:
-        os.remove(pdf)
-
-    return pdf_merged_path
 
 
 @app.route('/')
@@ -41,13 +10,29 @@ def main():
     return render_template('index.html')
 
 
-@app.route('/request', methods=['GET', 'POST'])
+@app.route('/request', methods=[ 'POST'])
 def get_request():
-    if request.method == "POST":
-        req = request.get_json()
-        res = make_response(
-            jsonify({'Message': "Transformation has been done successfully", 'path': merge_pdfs(save_pdfs(req['codes']))}), 200)
-        return res
+    try:
+        data = request.get_json(force=True)
+
+
+        if not data or "codes" not in data:
+            return jsonify({"error": "Missing 'codes' in request body"}), 400
+
+
+        saved_files = save_pdfs(data["codes"])
+        merged_path = merge_pdfs(saved_files)
+
+        return jsonify({
+            "message": "Transformation has been done successfully",
+            "path": merged_path
+        }), 200
+
+    except Exception as error:
+        return jsonify({
+            "error": "An error occurred during processing",
+            "details": str(error)
+        }), 500
 
 
 if (__name__ == '__main__'):

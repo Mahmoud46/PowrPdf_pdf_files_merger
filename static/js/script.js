@@ -16,11 +16,15 @@ uploadBtn.addEventListener("click", (_) => fileInput.click());
 fileInput.addEventListener("input", (_) => {
 	layout.classList.add("active");
 	let file = fileInput.files[0];
-	if (file && file.type == "application/pdf") {
+	const file_name = file.name.split(".");
+	if (
+		file &&
+		file.type == "application/pdf" &&
+		file_name[file_name.length - 1] == "pdf"
+	) {
 		let reader = new FileReader();
 		reader.onload = (_) => {
 			let url = reader.result;
-			console.log(file);
 			addCardToCardContainer(
 				file.name,
 				file.name.length > 20
@@ -33,6 +37,8 @@ fileInput.addEventListener("input", (_) => {
 			checkEmpty();
 		};
 		reader.readAsDataURL(file);
+	} else {
+		layout.classList.remove("active");
 	}
 });
 
