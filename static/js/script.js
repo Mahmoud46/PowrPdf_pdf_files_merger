@@ -7,6 +7,7 @@ let uploadBtn = document.querySelector("button.upload"),
 	errorWindow = document.querySelector(".error"),
 	clsErrorWindowBtn = document.querySelector(".cls-error"),
 	fileCount = document.querySelector("span.count");
+
 let src_pre = "",
 	count = 0;
 
