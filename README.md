@@ -77,7 +77,7 @@ project-root/
 - Python 3.9 or higher
 - pip (included with Python)
 
-## ⚙️ Installation & Setup
+### ⚙️ Installation & Setup
 
 1. Clone the repository
 
