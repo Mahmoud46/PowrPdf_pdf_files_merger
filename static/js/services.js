@@ -5,7 +5,7 @@ import { STATUS } from "./status.js";
 export function addCardToCardContainer(originalName, fileName, code) {
 	DOM.cardContainer.innerHTML += `
                             <div class="card" code="${code}">
-                                <p title="${originalName}" class="name"><img src="./static/imgs/pdf-icon.svg" width="30px" alt="">${fileName}</p>
+                                <p title="${originalName}" class="name"><img src="./static/assets/pdf-icon.svg" width="30px" alt="">${fileName}</p>
                                 <button class="delete" title="Remove"><span class="material-symbols-outlined">close</span></button>
                             </div>
                         `;
@@ -84,7 +84,7 @@ export function sendDataToSurver(filesCode) {
 							DOM.downloadBtn.classList.contains("inactive")
 								? null
 								: DOM.downloadBtn.classList.add("inactive"),
-						1000
+						1000,
 					);
 				});
 			}, 5000);
