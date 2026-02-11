@@ -26,7 +26,6 @@ The application is suitable for everyday document management tasks, offering a l
 ## 🛠️ Tech Stack
 
 - **Frontend**
-
   - HTML
   - CSS
   - JavaScript
@@ -56,15 +55,18 @@ The application is suitable for everyday document management tasks, offering a l
 
 ```bash
 project-root/
+├── config/
+|   └── paths.py
 ├── controllers/
 ├── services/
 ├── static/
+|   ├── assets/
 |   ├── css/
-|   ├── imgs/
 |   ├── js/
-|   └── pdfs/
-|       ├── merged_pdf/ # Generated merged PDFs
-|       └── pdf_list/   # Temporarily uploaded PDF files
+|   ├── public/
+|   └── db/
+|       ├── generated/
+|       └── update/
 ├── templates/         # HTML templates
 ├── app.py             # Flask application entry point
 └── requirements.txt   # Python dependencies
